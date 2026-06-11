@@ -1,82 +1,72 @@
 # Windows Server Infrastructure & Active Directory Administration
 
+### Active Directory · DNS · DHCP · Group Policy · Windows Server 2022
 
-### Active Directory · DNS · DHCP · Group Policy · Domain-Joined Workstation
+**Md Rahat Islam Anik · George Brown College · Cloud Computing & Network Administration (T465) · Postgraduate**
 
-**Md Rahat Islam Anik · George Brown College · Cloud Computing Technologies (T465) · Postgraduate**
-
-[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/rahatislamanik-spec/windows-server-infrastructure-active-directory)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/rahatislamanik-spec/Windows-Server-Infrastructure-Active-Directory)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-rahatislamanik-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/rahatislamanik)
 
 ---
 
 ## Overview
 
-This project covers the deployment and administration of a Windows Server enterprise environment built around centralized identity management, policy enforcement, and core infrastructure services.
+This project documents the deployment and configuration of a Windows Server 2022 Active Directory environment — from OS installation through Domain Controller promotion and first domain logon.
 
-The environment is structured as a single-domain Active Directory forest — the foundational architecture used in the majority of enterprise Windows networks. Every layer was configured and verified: domain promotion, organizational unit design, user and group management, Group Policy enforcement, DNS integration, DHCP scope management, and domain-joined workstation validation.
+The environment is structured as a single-domain Active Directory forest. Every stage of the deployment was configured hands-on and captured as evidence: OS installation, Server Manager role deployment, AD DS configuration wizard, DNS integration, DC promotion, and domain authentication.
 
+---
 
 ## Architecture Diagram
 
 ![Windows Server 2022 Domain Controller Architecture](assets/windows-server-2022-domain-controller-architecture-v2.svg)
 
-This architecture illustrates the Windows Server 2022 Active Directory environment, including Active Directory Domain Services (AD DS), DNS, DHCP, Organizational Units (OUs), Security Groups, Group Policy Objects (GPOs), and domain-joined client systems.
+This diagram illustrates the Windows Server 2022 Active Directory environment, including Active Directory Domain Services (AD DS), DNS, DHCP, Organizational Units (OUs), Security Groups, Group Policy Objects (GPOs), and domain-joined client systems — showing the operational flow of IP assignment, DNS resolution, domain join, authentication, and Group Policy processing.
 
-The diagram highlights the operational flow of IP assignment, DNS resolution, domain join operations, authentication, and Group Policy processing within the enterprise domain environment.
+---
 
-## Architecture Highlights
-
-- Active Directory Domain Services (AD DS)
-- DNS Integration
-- DHCP Scope Management
-- Organizational Unit (OU) Design
-- Group Policy Enforcement
-- Domain-Joined Workstation Authentication
-
-- ## Environment Summary
+## Environment Summary
 
 | Component | Details |
-|------------|----------|
-| Domain | ik.local |
-| Domain Controller | Windows Server 2022 |
-| Services | AD DS, DNS, DHCP |
-| Client | Windows Workstation |
-| Management Tools | ADUC, GPMC, DNS Manager, DHCP Manager |
+|---|---|
+| Domain | anik.local |
+| Domain Controller | Windows Server 2022 Datacenter Evaluation |
+| Virtualization | UTM (QEMU/x86_64) on macOS |
+| Services Deployed | AD DS, DNS |
+| Management Tools | Server Manager, ADUC, GPMC, DNS Manager |
 
 ---
 
 ## What Was Built
 
-### Active Directory Domain Services — Forest & Domain Deployment
+### Windows Server 2022 — OS Installation & Initial Configuration
 
-A new Active Directory forest was deployed on Windows Server 2022, with the server promoted to Domain Controller. DNS was integrated at promotion, establishing the domain as the authoritative zone for name resolution across the environment.
+Windows Server 2022 Datacenter Evaluation (Desktop Experience) was installed on a virtualized x86_64 environment. The VM was allocated 4 vCPUs, 8 GB RAM, and 64 GB storage. Initial configuration included setting the built-in Administrator password and verifying Server Manager loaded on first login.
 
-The domain structure was built with a logical organizational unit hierarchy to support role-based administration — separating users, computers, and groups into discrete OUs that Group Policy can target independently.
+### Active Directory Domain Services — Role Deployment
 
-### Active Directory Users & Computers — Identity Management
+The AD DS role was installed via the Add Roles and Features Wizard in Server Manager, along with Group Policy Management and Remote Server Administration Tools. Installation was confirmed before proceeding to domain controller promotion.
 
-User accounts and security groups were created and organized within the OU structure using Active Directory Users & Computers (ADUC). Account attributes, group memberships, and organizational placement were configured to reflect a real enterprise identity model — not flat, ungrouped accounts, but a structured directory that scales.
+### Domain Controller Promotion — Forest Deployment
 
-### Group Policy — Centralized Configuration & Security Enforcement
+The server was promoted to Domain Controller using the AD DS Configuration Wizard. A new Active Directory forest was created with the root domain `anik.local`. Configuration included:
 
-Group Policy Objects (GPOs) were created and linked at the domain and OU level using the Group Policy Management Console (GPMC). Policy settings were applied to enforce security baselines and configuration standards across users and computers in the domain — the same mechanism enterprise IT teams use to push settings to thousands of endpoints simultaneously.
+- DNS Server and Global Catalog enabled at promotion
+- DSRM password configured
+- DNS delegation warning acknowledged (expected in standalone lab)
+- NetBIOS name automatically assigned as `ANIK`
+- Default paths confirmed: `C:\Windows\NTDS` (database and logs), `C:\Windows\SYSVOL`
+- All prerequisites passed successfully prior to installation
 
-Policy application was verified using Group Policy results to confirm settings were correctly inherited and applied to the target objects.
+The wizard generated a PowerShell deployment script (`Install-ADDSForest`) documenting the full configuration — suitable for repeatable or automated deployments.
 
-### DNS — Domain Name Resolution
+### DNS Integration
 
-DNS was configured to support domain name resolution and service location across the environment. The DNS Server role operates as the authoritative resolver for the domain, enabling domain join, authentication, and replication to function correctly. Without properly configured DNS, Active Directory does not work — DNS is the backbone of every AD environment.
+DNS was integrated at promotion, establishing `anik.local` as the authoritative zone. Without correctly configured DNS, Active Directory authentication, service discovery, and replication cannot function — DNS is the foundational dependency of every AD environment.
 
-### DHCP — Automated IP Address Management
+### Domain Authentication — First Logon
 
-DHCP was configured with address scopes to automate IP assignment across the environment. Reservations were created to bind specific IP addresses to infrastructure servers by MAC address — ensuring consistent addressing for systems that need it while keeping the rest of the network dynamically managed.
-
-Scope configuration, lease assignment, and reservation binding were all verified against connected client systems.
-
-### Workstation Integration — Domain Join & Validation
-
-A Windows client workstation was joined to the domain and authenticated under domain credentials. Domain membership, Group Policy application, and DNS resolution were all validated post-join — confirming the environment functions end to end, not just at the server layer.
+Following promotion and automatic reboot, the server authenticated successfully as `ANIK\Administrator`, confirming the domain is operational and the DC is functioning correctly.
 
 ---
 
@@ -84,51 +74,92 @@ A Windows client workstation was joined to the domain and authenticated under do
 
 | Category | Tools & Services |
 |---|---|
-| Server OS | Windows Server 2022 |
+| Server OS | Windows Server 2022 Datacenter Evaluation |
+| Virtualization | UTM (QEMU x86_64) |
 | Directory Services | Active Directory Domain Services (AD DS) |
-| Identity Management | Active Directory Users & Computers (ADUC) |
-| Policy Enforcement | Group Policy Management Console (GPMC) |
-| Name Resolution | DNS Server |
-| IP Management | DHCP Server |
-| Client Systems | Domain-Joined Windows Workstation |
+| Policy Management | Group Policy Management Console (GPMC) |
+| Name Resolution | DNS Server (integrated at DC promotion) |
+| Administration | Server Manager, ADUC |
 
 ---
 
 ## Skills Demonstrated
 
-`Active Directory Domain Services` · `AD Forest Deployment` · `Organizational Unit Design` · `User & Group Management` · `Group Policy Objects` · `DNS Configuration` · `DHCP Scopes & Reservations` · `Domain Join & Validation` · `RBAC` · `Windows Server 2022` · `GPMC` · `ADUC`
+`Active Directory Domain Services` · `AD Forest Deployment` · `Domain Controller Promotion` · `DNS Integration` · `Group Policy Management` · `Windows Server 2022` · `Server Manager` · `PowerShell AD Deployment` · `Virtualization (UTM/QEMU)`
 
 ---
 
-## Screenshots
+## Deployment Evidence
 
-Configuration evidence from the deployed environment — each screenshot documents a validated configuration stage.
+Real screenshots from the lab environment documenting each stage of the deployment.
 
-### Server Manager — AD DS, DNS, DHCP Roles Installed
-![Server Manager showing AD DS, DNS, DHCP roles](screenshots/01_server_manager_ad_ds.png)
+### 01 — Windows Server 2022 Edition Selection
+![Windows Server 2022 Datacenter Evaluation selected](screenshots/01-windows-server-2022-edition-selection.png)
 
-### Active Directory Users & Computers — OU Structure & Users
-![Active Directory Users and Computers showing OUs and users](screenshots/02_ad_users_computers_ou_users.png)
+### 02 — OS Installation in Progress
+![Windows Server installation copying files](screenshots/02-windows-server-installation-progress.png)
 
-### Group Policy Management — GPO Configuration
-![Group Policy Management Console showing domain GPOs](screenshots/03_group_policy_management.png)
+### 03 — Administrator Password Configuration
+![Built-in Administrator password set during first-time setup](screenshots/03-administrator-password-setup.png)
 
-### DHCP Manager — Scope & Reservation Configuration
-![DHCP Manager showing reservation for infrastructure server](screenshots/04_dhcp_scope_configuration.png)
+### 04 — Server Manager Loading on First Boot
+![Server Manager loading automatically after first login](screenshots/04-server-manager-loading-post-boot.png)
 
-### Domain-Joined Workstation — Client Authentication Verified
-![Domain-joined workstation verifying domain membership](screenshots/05_domain_joined_workstation.png)
+### 05 — Server Manager Local Server Properties
+![Server Manager Local Server tab showing server properties](screenshots/05-server-manager-local-server-properties.png)
+
+### 06 — Server Manager Dashboard
+![Server Manager dashboard confirming server is ready for role installation](screenshots/06-server-manager-dashboard.png)
+
+### 07 — Add Roles and Features — Server Selection
+![Add Roles and Features Wizard: destination server selected from server pool](screenshots/07-add-roles-features-server-selection.png)
+
+### 08 — Server Roles — AD DS Selected
+![Active Directory Domain Services role selected in Server Roles list](screenshots/08-server-roles-adds-selected.png)
+
+### 09 — AD DS Role Information Page
+![AD DS information page outlining DNS requirements and DC recommendations](screenshots/09-adds-role-information-page.png)
+
+### 10 — AD DS Installation Confirmation
+![Confirmation screen showing AD DS, Group Policy Management, and RSAT tools selected](screenshots/10-adds-installation-confirmation.png)
+
+### 11 — AD DS Installation in Progress
+![Feature installation progress bar — AD DS and supporting tools installing](screenshots/11-adds-installation-progress.png)
+
+### 12 — DC Promotion — Deployment Configuration
+![AD DS Configuration Wizard: Add a new forest, anik.local domain specified](screenshots/12-adds-deployment-configuration.png)
+
+### 13 — DC Promotion — Domain Controller Options
+![DC Options: DNS, Global Catalog enabled; forest and domain functional level Windows Server 2016; DSRM password configured](screenshots/13-dc-options-dns-gc-dsrm.png)
+
+### 14 — DC Promotion — DNS Options
+![DNS Options: no delegation required; warning acknowledged for standalone lab](screenshots/14-dns-options-no-delegation.png)
+
+### 15 — DC Promotion — Additional Options (NetBIOS)
+![Additional Options: NetBIOS domain name automatically set to ANIK](screenshots/15-additional-options-netbios-name.png)
+
+### 16 — DC Promotion — AD DS Paths
+![Paths page: NTDS database, log files, and SYSVOL at default Windows paths](screenshots/16-adds-paths-ntds-sysvol.png)
+
+### 17 — DC Promotion — PowerShell Deployment Script
+![Auto-generated PowerShell Install-ADDSForest script documenting the full forest configuration](screenshots/17-adds-powershell-deployment-script.png)
+
+### 18 — DC Promotion — Prerequisites Check Passed
+![All prerequisite checks passed; DNS delegation warning noted; ready to install](screenshots/18-adds-prerequisites-check-passed.png)
+
+### 19 — First Domain Logon — ANIK\Administrator
+![Server rebooted post-promotion; first logon as ANIK\Administrator confirming domain is operational](screenshots/19-first-logon-domain-controller.png)
 
 ---
-
 
 ## Lessons Learned
 
-- DNS is the foundational service that enables Active Directory authentication, service discovery, and domain operations.
-- Group Policy provides centralized configuration management and scalable security enforcement across domain-joined systems.
-- Thoughtful Organizational Unit (OU) design simplifies administration, delegation, and policy targeting.
-- DHCP reservations help maintain consistent addressing for critical infrastructure components.
-- End-to-end validation of domain join, authentication, DNS resolution, and Group Policy processing is essential when verifying an enterprise environment.
+- DNS is the foundational dependency of Active Directory — authentication, service discovery, and replication all depend on it being correctly configured at promotion.
+- The AD DS Configuration Wizard auto-generates a PowerShell deployment script, enabling repeatable and auditable forest deployments.
+- Prerequisites validation is a critical gate before DC promotion — warnings must be understood, not bypassed.
+- Functional level selection at promotion determines which AD features are available across the forest and domain.
+
+---
 
 ## Author
 
