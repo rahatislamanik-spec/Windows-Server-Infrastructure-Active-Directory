@@ -11,7 +11,7 @@
 
 ## Overview
 
-This project documents the deployment and configuration of a Windows Server 2022 Active Directory environment — from OS installation through Domain Controller promotion and first domain logon.
+This project documents the deployment and configuration of a Windows Server 2022 Active Directory environment — from Windows Server deployment through Active Directory forest creation, DNS integration, domain controller promotion, Group Policy configuration, and domain authentication.
 
 The environment is structured as a single-domain Active Directory forest. Every stage of the deployment was configured hands-on and captured as evidence: OS installation, Server Manager role deployment, AD DS configuration wizard, DNS integration, DC promotion, and domain authentication.
 
@@ -70,6 +70,56 @@ Following promotion and automatic reboot, the server authenticated successfully 
 
 ---
 
+## Directory Design
+
+### Organizational Unit Structure
+
+The OU hierarchy was designed to support role-based Group Policy targeting, delegated administration, and clean separation of identity objects — mirroring the structure used in enterprise Windows environments.
+
+```
+anik.local
+├── Domain Controllers          # Default DC OU — holds ANIK DC
+├── Servers                     # Member servers (file, print, app)
+├── Workstations                # Domain-joined client machines
+├── Users
+│   ├── IT_Staff                # IT administrators and helpdesk
+│   ├── Corporate               # Standard business users
+│   └── Service_Accounts        # Non-interactive service identities
+└── Groups
+    ├── Security                # Permission-based security groups
+    └── Distribution            # Email distribution groups
+```
+
+Separating Users, Computers, and Groups into discrete OUs allows Group Policy Objects to be linked and targeted independently — a core principle of scalable AD administration.
+
+### Security Groups
+
+Security groups were designed following the **AGDLP nesting model** (Account → Global → Domain Local → Permission) to support scalable, auditable access control.
+
+| Group Name | Type | Scope | Purpose |
+|---|---|---|---|
+| IT_Admins | Security | Global | Full administrative access across the domain |
+| Helpdesk | Security | Global | Password resets, user account management |
+| HR_Users | Security | Global | Access to HR file shares and resources |
+| Finance_Users | Security | Global | Access to Finance file shares and resources |
+| Corporate_Users | Security | Global | Baseline access for all standard employees |
+| SVC_Backup | Security | Global | Service account for backup operations |
+
+### Group Policy Design
+
+GPOs were planned and linked at the domain and OU level to enforce security baselines and configuration standards.
+
+| GPO Name | Linked To | Purpose |
+|---|---|---|
+| Default Domain Policy | anik.local | Password policy: 12-char minimum, complexity required, 90-day expiry |
+| Workstation Baseline | Workstations OU | Disable USB storage, enforce screensaver lock (10 min), restrict Control Panel |
+| IT Staff Policy | Users\IT_Staff OU | Remote Desktop enabled, PowerShell execution policy set to RemoteSigned |
+| Server Baseline | Servers OU | Windows Firewall enforced, audit policy enabled, NTP sync configured |
+
+Policy application was verified using `gpresult /r` to confirm settings were correctly inherited and applied to target objects.
+
+---
+
 ## Tech Stack
 
 | Category | Tools & Services |
@@ -85,7 +135,7 @@ Following promotion and automatic reboot, the server authenticated successfully 
 
 ## Skills Demonstrated
 
-`Active Directory Domain Services` · `AD Forest Deployment` · `Domain Controller Promotion` · `DNS Integration` · `Group Policy Management` · `Windows Server 2022` · `Server Manager` · `PowerShell AD Deployment` · `Virtualization (UTM/QEMU)`
+`Active Directory Domain Services` · `AD Forest Deployment` · `Domain Controller Promotion` · `Organizational Unit Design` · `Security Group Management` · `AGDLP Nesting Model` · `Group Policy Objects` · `DNS Integration` · `Windows Server 2022` · `Server Manager` · `PowerShell AD Deployment` · `Virtualization (UTM/QEMU)`
 
 ---
 
@@ -155,6 +205,8 @@ Real screenshots from the lab environment documenting each stage of the deployme
 ## Lessons Learned
 
 - DNS is the foundational dependency of Active Directory — authentication, service discovery, and replication all depend on it being correctly configured at promotion.
+- Thoughtful OU design is a prerequisite for scalable Group Policy targeting and delegated administration — flat directory structures do not scale.
+- The AGDLP nesting model enables flexible, auditable access control that doesn't require direct permission assignments on every resource.
 - The AD DS Configuration Wizard auto-generates a PowerShell deployment script, enabling repeatable and auditable forest deployments.
 - Prerequisites validation is a critical gate before DC promotion — warnings must be understood, not bypassed.
 - Functional level selection at promotion determines which AD features are available across the forest and domain.
