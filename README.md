@@ -1,4 +1,5 @@
-# Windows Server Infrastructure & Active Directory Administration ( active ) 
+# Windows Server Infrastructure & Active Directory Administration
+
 
 ### Active Directory · DNS · DHCP · Group Policy · Domain-Joined Workstation
 
