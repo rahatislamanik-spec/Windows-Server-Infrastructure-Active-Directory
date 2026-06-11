@@ -25,6 +25,15 @@ This architecture illustrates the Windows Server 2022 Active Directory environme
 
 The diagram highlights the operational flow of IP assignment, DNS resolution, domain join operations, authentication, and Group Policy processing within the enterprise domain environment.
 
+## Architecture Highlights
+
+- Active Directory Domain Services (AD DS)
+- DNS Integration
+- DHCP Scope Management
+- Organizational Unit (OU) Design
+- Group Policy Enforcement
+- Domain-Joined Workstation Authentication
+
 ---
 
 ## What Was Built
