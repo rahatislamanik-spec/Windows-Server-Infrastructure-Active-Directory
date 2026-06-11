@@ -15,6 +15,15 @@ This project covers the deployment and administration of a Windows Server enterp
 
 The environment is structured as a single-domain Active Directory forest — the foundational architecture used in the majority of enterprise Windows networks. Every layer was configured and verified: domain promotion, organizational unit design, user and group management, Group Policy enforcement, DNS integration, DHCP scope management, and domain-joined workstation validation.
 
+
+## Architecture Diagram
+
+![Windows Server 2022 Domain Controller Architecture](assets/windows-server-2022-domain-controller-architecture-v2.svg)
+
+This architecture illustrates the Windows Server 2022 Active Directory environment, including Active Directory Domain Services (AD DS), DNS, DHCP, Organizational Units (OUs), Security Groups, Group Policy Objects (GPOs), and domain-joined client systems.
+
+The diagram highlights the operational flow of IP assignment, DNS resolution, domain join operations, authentication, and Group Policy processing within the enterprise domain environment.
+
 ---
 
 ## What Was Built
