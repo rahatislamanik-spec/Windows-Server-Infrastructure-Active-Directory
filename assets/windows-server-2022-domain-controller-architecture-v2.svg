@@ -1,0 +1,161 @@
+<svg width="1800" height="1100" viewBox="0 0 1800 1100" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="45%" stop-color="#EEF6FF"/>
+      <stop offset="100%" stop-color="#F5F3FF"/>
+    </linearGradient>
+
+    <linearGradient id="dcGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1D4ED8"/>
+      <stop offset="100%" stop-color="#312E81"/>
+    </linearGradient>
+
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0F172A" flood-opacity="0.16"/>
+    </filter>
+
+    <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 z" fill="#2563EB"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 z" fill="#059669"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 z" fill="#D97706"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 z" fill="#7C3AED"/>
+    </marker>
+    <marker id="arrowPink" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 z" fill="#DB2777"/>
+    </marker>
+
+    <style>
+      .title { font-family: Arial, Helvetica, sans-serif; font-size: 44px; font-weight: 700; fill: #0F172A; }
+      .subtitle { font-family: Arial, Helvetica, sans-serif; font-size: 23px; fill: #475569; }
+      .section { font-family: Arial, Helvetica, sans-serif; font-size: 22px; font-weight: 700; fill: #0F172A; }
+      .box-title { font-family: Arial, Helvetica, sans-serif; font-size: 21px; font-weight: 700; fill: #0F172A; }
+      .box-text { font-family: Arial, Helvetica, sans-serif; font-size: 16px; fill: #334155; }
+      .small { font-family: Arial, Helvetica, sans-serif; font-size: 14px; fill: #475569; }
+      .white-title { font-family: Arial, Helvetica, sans-serif; font-size: 26px; font-weight: 700; fill: #FFFFFF; }
+      .white-text { font-family: Arial, Helvetica, sans-serif; font-size: 17px; fill: #E0E7FF; }
+      .label { font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 700; fill: #0F172A; }
+      .legend { font-family: Arial, Helvetica, sans-serif; font-size: 15px; fill: #334155; }
+      .lineBlue { stroke: #2563EB; stroke-width: 4; fill: none; marker-end: url(#arrowBlue); }
+      .lineGreen { stroke: #059669; stroke-width: 4; fill: none; marker-end: url(#arrowGreen); }
+      .lineOrange { stroke: #D97706; stroke-width: 4; fill: none; marker-end: url(#arrowOrange); }
+      .linePurple { stroke: #7C3AED; stroke-width: 4; fill: none; marker-end: url(#arrowPurple); }
+      .linePink { stroke: #DB2777; stroke-width: 4; fill: none; marker-end: url(#arrowPink); }
+      .dashBlue { stroke: #2563EB; stroke-width: 3; fill: none; stroke-dasharray: 10 8; marker-end: url(#arrowBlue); }
+      .dashGreen { stroke: #059669; stroke-width: 3; fill: none; stroke-dasharray: 10 8; marker-end: url(#arrowGreen); }
+      .dashOrange { stroke: #D97706; stroke-width: 3; fill: none; stroke-dasharray: 10 8; marker-end: url(#arrowOrange); }
+      .dashPurple { stroke: #7C3AED; stroke-width: 3; fill: none; stroke-dasharray: 10 8; marker-end: url(#arrowPurple); }
+      .dashPink { stroke: #DB2777; stroke-width: 3; fill: none; stroke-dasharray: 10 8; marker-end: url(#arrowPink); }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1100" fill="url(#bg)"/>
+
+  <text x="80" y="82" class="title">Windows Server 2022 Domain Controller Architecture</text>
+  <text x="80" y="122" class="subtitle">Live operational flow: DHCP lease, DNS lookup, domain join, authentication, and Group Policy application</text>
+
+  <rect x="70" y="160" width="1660" height="845" rx="30" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" filter="url(#shadow)"/>
+  <text x="115" y="208" class="section">Enterprise Lab Domain: ik.local</text>
+  <text x="115" y="238" class="box-text">Centralized identity and endpoint administration using Active Directory Domain Services</text>
+
+  <!-- Left service lane -->
+  <rect x="120" y="285" width="310" height="125" rx="20" fill="#DBEAFE" stroke="#2563EB" stroke-width="2.5"/>
+  <text x="155" y="332" class="box-title">1. DHCP Service</text>
+  <text x="155" y="364" class="box-text">Assigns IP address</text>
+  <text x="155" y="390" class="small">Scope, lease, gateway, DNS option</text>
+
+  <rect x="120" y="465" width="310" height="125" rx="20" fill="#DCFCE7" stroke="#059669" stroke-width="2.5"/>
+  <text x="155" y="512" class="box-title">2. DNS Service</text>
+  <text x="155" y="544" class="box-text">Resolves domain services</text>
+  <text x="155" y="570" class="small">Finds DC01 and ik.local records</text>
+
+  <rect x="120" y="645" width="310" height="125" rx="20" fill="#FEF3C7" stroke="#D97706" stroke-width="2.5"/>
+  <text x="155" y="692" class="box-title">3. AD DS</text>
+  <text x="155" y="724" class="box-text">Stores identities</text>
+  <text x="155" y="750" class="small">Users, computers, groups, OUs</text>
+
+  <!-- Main DC -->
+  <rect x="640" y="285" width="460" height="175" rx="26" fill="url(#dcGrad)" filter="url(#shadow)"/>
+  <text x="690" y="340" class="white-title">DC01</text>
+  <text x="690" y="376" class="white-text">Windows Server 2022</text>
+  <text x="690" y="408" class="white-text">Domain Controller for ik.local</text>
+  <text x="690" y="438" class="white-text">Hosts AD DS, DNS, DHCP, and GPO services</text>
+
+  <rect x="660" y="530" width="420" height="120" rx="22" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2.5"/>
+  <text x="700" y="575" class="box-title">4. Group Policy Management</text>
+  <text x="700" y="607" class="box-text">Applies security and configuration baselines</text>
+  <text x="700" y="632" class="small">Password policy, desktop settings, updates, access rules</text>
+
+  <rect x="660" y="735" width="420" height="125" rx="22" fill="#F8FAFC" stroke="#475569" stroke-width="2.5" filter="url(#shadow)"/>
+  <text x="700" y="783" class="box-title">Windows Client Workstation</text>
+  <text x="700" y="815" class="box-text">Domain-joined endpoint</text>
+  <text x="700" y="842" class="small">Receives network settings, locates DC, authenticates, receives GPOs</text>
+
+  <!-- Right org/security lane -->
+  <rect x="1305" y="285" width="330" height="125" rx="20" fill="#FDF2F8" stroke="#DB2777" stroke-width="2.5"/>
+  <text x="1340" y="332" class="box-title">OU Structure</text>
+  <text x="1340" y="364" class="box-text">Logical administration</text>
+  <text x="1340" y="390" class="small">IT, HR, Finance, Users, Computers</text>
+
+  <rect x="1305" y="465" width="330" height="125" rx="20" fill="#ECFDF5" stroke="#059669" stroke-width="2.5"/>
+  <text x="1340" y="512" class="box-title">Security Groups</text>
+  <text x="1340" y="544" class="box-text">Role-based access</text>
+  <text x="1340" y="570" class="small">Department and admin group membership</text>
+
+  <rect x="1305" y="645" width="330" height="125" rx="20" fill="#EEF2FF" stroke="#4F46E5" stroke-width="2.5"/>
+  <text x="1340" y="692" class="box-title">Authentication</text>
+  <text x="1340" y="724" class="box-text">Centralized sign-in</text>
+  <text x="1340" y="750" class="small">User and computer access validation</text>
+
+  <!-- Service to DC connections -->
+  <path class="lineBlue" d="M430 348 C515 330 555 330 640 348"/>
+  <text x="478" y="315" class="label">Network service hosted on DC01</text>
+
+  <path class="lineGreen" d="M430 528 C525 465 555 420 640 390"/>
+  <text x="475" y="495" class="label">Name resolution service</text>
+
+  <path class="lineOrange" d="M430 708 C540 610 565 505 640 430"/>
+  <text x="466" y="672" class="label">Identity directory</text>
+
+  <!-- DC to right lane -->
+  <path class="linePink" d="M1100 345 C1190 345 1220 345 1305 345"/>
+  <text x="1152" y="318" class="label">Organizes objects</text>
+
+  <path class="lineGreen" d="M1100 385 C1190 430 1220 485 1305 525"/>
+  <text x="1150" y="455" class="label">Controls access</text>
+
+  <path class="linePurple" d="M1080 590 C1185 625 1215 665 1305 705"/>
+  <text x="1132" y="635" class="label">Validates sign-in</text>
+
+  <!-- Live data flow from client -->
+  <path class="dashBlue" d="M660 790 C520 790 470 420 430 350"/>
+  <text x="470" y="812" class="label">DHCP Discover / Offer / Request / ACK</text>
+
+  <path class="dashGreen" d="M660 815 C520 790 470 590 430 530"/>
+  <text x="463" y="768" class="label">DNS query: locate domain controller</text>
+
+  <path class="dashOrange" d="M690 735 C610 665 525 705 430 708"/>
+  <text x="488" y="718" class="label">Domain join + computer account creation</text>
+
+  <path class="dashPurple" d="M870 735 L870 650"/>
+  <text x="890" y="705" class="label">GPO request and application</text>
+
+  <path class="dashPink" d="M1080 798 C1185 790 1235 735 1305 705"/>
+  <text x="1118" y="827" class="label">User logon authentication</text>
+
+  <!-- Legend -->
+  <rect x="115" y="905" width="1520" height="75" rx="18" fill="#F8FAFC" stroke="#CBD5E1"/>
+  <text x="145" y="937" class="box-title">Live Data Flow Legend</text>
+  <circle cx="395" cy="932" r="8" fill="#2563EB"/><text x="415" y="938" class="legend">DHCP lease flow</text>
+  <circle cx="590" cy="932" r="8" fill="#059669"/><text x="610" y="938" class="legend">DNS lookup flow</text>
+  <circle cx="790" cy="932" r="8" fill="#D97706"/><text x="810" y="938" class="legend">Domain join / AD object flow</text>
+  <circle cx="1065" cy="932" r="8" fill="#7C3AED"/><text x="1085" y="938" class="legend">Group Policy flow</text>
+  <circle cx="1275" cy="932" r="8" fill="#DB2777"/><text x="1295" y="938" class="legend">Authentication flow</text>
+  <text x="145" y="966" class="small">Solid arrows show hosted services and administration structure. Dashed arrows show live client-to-domain operational traffic.</text>
+</svg>
