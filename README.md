@@ -34,6 +34,16 @@ The diagram highlights the operational flow of IP assignment, DNS resolution, do
 - Group Policy Enforcement
 - Domain-Joined Workstation Authentication
 
+- ## Environment Summary
+
+| Component | Details |
+|------------|----------|
+| Domain | ik.local |
+| Domain Controller | Windows Server 2022 |
+| Services | AD DS, DNS, DHCP |
+| Client | Windows Workstation |
+| Management Tools | ADUC, GPMC, DNS Manager, DHCP Manager |
+
 ---
 
 ## What Was Built
@@ -110,6 +120,15 @@ Configuration evidence from the deployed environment — each screenshot documen
 ![Domain-joined workstation verifying domain membership](screenshots/05_domain_joined_workstation.png)
 
 ---
+
+
+## Lessons Learned
+
+- DNS is the foundational service that enables Active Directory authentication, service discovery, and domain operations.
+- Group Policy provides centralized configuration management and scalable security enforcement across domain-joined systems.
+- Thoughtful Organizational Unit (OU) design simplifies administration, delegation, and policy targeting.
+- DHCP reservations help maintain consistent addressing for critical infrastructure components.
+- End-to-end validation of domain join, authentication, DNS resolution, and Group Policy processing is essential when verifying an enterprise environment.
 
 ## Author
 
