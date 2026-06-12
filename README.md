@@ -15,7 +15,7 @@ This repository documents the hands-on deployment of a Windows Server 2022 Activ
 
 Every configuration step is captured in sequence: server provisioning, AD DS role installation, the full DC promotion wizard, DNS integration, and verified domain logon. The focus here is the deployment process itself — what you actually do when you build an AD forest from scratch, and why each step matters.
 
-If you want to see what the environment looks like once it's running — OUs populated, GPOs applied, workstation joined, file shares mapped — that's documented in the companion project:
+This repository records a focused deployment exercise using the `anik.local` lab forest. The companion project below documents a separate, broader administration lab using `lab.local`; it is cross-referenced for complementary operational evidence, not presented as the same forest:
 
 > **Related project: [Windows-Server-2022-Enterprise-Domain](https://github.com/rahatislamanik-spec/Windows-Server-2022-Enterprise-Domain)** — full enterprise domain lab with 158 screenshots covering DHCP, DNS, Group Policy, file services, and end-to-end workstation validation.
 
@@ -25,7 +25,7 @@ If you want to see what the environment looks like once it's running — OUs pop
 
 ![Windows Server 2022 Domain Controller Architecture](assets/windows-server-2022-domain-controller-architecture-v2.svg)
 
-The architecture covers Active Directory Domain Services, DNS integration, DHCP, Organizational Units, Security Groups, Group Policy Objects, and domain-joined client systems — including the operational flow of authentication, DNS resolution, IP assignment, and policy processing.
+The architecture presents the target operating model around the deployed AD DS and DNS foundation. This repository's retained screenshots directly evidence Windows Server installation, AD DS role installation, forest promotion, DNS integration, and first domain authentication. DHCP, OU, security-group, GPO, and client-system elements show the intended extension path and are not claimed here as retained implementation evidence.
 
 ---
 
@@ -37,7 +37,10 @@ The architecture covers Active Directory Domain Services, DNS integration, DHCP,
 | Domain Controller | Windows Server 2022 Datacenter Evaluation |
 | Virtualization | UTM (QEMU/x86_64) on macOS |
 | Services Deployed | AD DS, DNS |
+| Evidence Scope | OS installation, role installation, forest promotion, DNS integration, first domain authentication |
 | Management Tools | Server Manager, ADUC, GPMC, DNS Manager |
+
+> **Namespace note:** `anik.local` is a lab-only namespace retained in historical evidence. A production design should use a registered DNS subdomain such as `ad.example.com` rather than `.local`.
 
 ---
 
@@ -70,15 +73,15 @@ DNS was configured as the authoritative resolver for `anik.local` at promotion. 
 
 ### First Domain Logon
 
-After promotion and automatic reboot, the server authenticated as `ANIK\Administrator` — confirming the forest is operational, the DC is healthy, and domain authentication is working end to end.
+After promotion and automatic reboot, the server authenticated as `ANIK\Administrator`. This confirms that promotion completed and domain authentication was available on the new controller; it does not by itself prove full domain-controller health, replication, backup, monitoring, or production readiness.
 
 ---
 
-## Directory Design
+## Target Directory Design
 
 ### Organizational Unit Structure
 
-The OU hierarchy was designed to support role-based Group Policy targeting, delegated administration, and clean separation of identity objects. Flat directory structures — everything in the default Users and Computers containers — do not scale and make GPO targeting painful.
+The following OU hierarchy is the target design for a fuller implementation. It supports role-based Group Policy targeting, delegated administration, and separation of identity objects, but this deployment-focused repository does not claim retained screenshots of the hierarchy being populated.
 
 ```
 anik.local
@@ -96,7 +99,7 @@ anik.local
 
 ### Security Groups
 
-Designed using the **AGDLP nesting model** (Account → Global → Domain Local → Permission) — the standard approach for scalable, auditable access control in enterprise AD environments.
+The target access model uses **AGDLP** (Account → Global → Domain Local → Permission), a scalable and auditable approach for enterprise AD access control. The table below documents proposed groups rather than retained creation evidence.
 
 | Group | Type | Scope | Purpose |
 |---|---|---|---|
@@ -107,9 +110,9 @@ Designed using the **AGDLP nesting model** (Account → Global → Domain Local 
 | Corporate_Users | Security | Global | Baseline access for all standard employees |
 | SVC_Backup | Security | Global | Service account for backup operations |
 
-### Group Policy Design
+### Target Group Policy Design
 
-GPOs linked at the domain and OU level to enforce security baselines and configuration standards across all managed objects.
+The following GPOs form the target-state policy design for extending this deployment lab into a managed domain environment.
 
 | GPO | Linked To | Purpose |
 |---|---|---|
@@ -118,13 +121,13 @@ GPOs linked at the domain and OU level to enforce security baselines and configu
 | IT Staff Policy | Users\IT_Staff OU | Remote Desktop enabled, PowerShell execution set to RemoteSigned |
 | Server Baseline | Servers OU | Windows Firewall enforced, audit policy enabled, NTP sync configured |
 
-Policy inheritance verified with `gpresult /r` on target objects.
+This repository does not claim retained `gpresult` validation for the `anik.local` build. GPO application evidence belongs to the separate `lab.local` operations repository linked above.
 
 ---
 
 ## Skills Demonstrated
 
-`Active Directory Domain Services` · `AD Forest Deployment` · `Domain Controller Promotion` · `Organizational Unit Design` · `Security Group Management` · `AGDLP Nesting` · `Group Policy Objects` · `DNS Integration` · `Windows Server 2022` · `Server Manager` · `PowerShell AD Deployment` · `Virtualization (UTM/QEMU)`
+`Active Directory Domain Services` · `AD Forest Deployment` · `Domain Controller Promotion` · `Organizational Unit Design` · `Security Group Design` · `AGDLP Design` · `Group Policy Design` · `DNS Integration` · `Windows Server 2022` · `Server Manager` · `PowerShell AD Deployment` · `Virtualization (UTM/QEMU)`
 
 ---
 
@@ -187,13 +190,13 @@ Screenshots from the lab environment documenting each stage of the deployment in
 ![All checks passed — DNS delegation warning noted and understood](screenshots/18-adds-prerequisites-check-passed.png)
 
 ### 19 — First Domain Logon
-![ANIK\Administrator — domain is live, DC is healthy](screenshots/19-first-logon-domain-controller.png)
+![ANIK\Administrator first domain authentication after promotion](screenshots/19-first-logon-domain-controller.png)
 
 ---
 
 ## Lessons Learned
 
-- DNS has to be right before the first client touches the domain. Authentication, replication, and service discovery all depend on it — getting this wrong is the most common reason AD deployments fail silently.
+- DNS has to be right before the first client touches the domain. Authentication, replication, and service discovery all depend on it, making DNS configuration a common source of AD deployment failures.
 - OU design decisions made at the start are hard to undo cleanly once users and computers are in the directory. Planning the hierarchy before population matters.
 - The AGDLP nesting model keeps access control scalable — assigning permissions directly to user accounts works fine at 20 users and becomes unmanageable at 200.
 - The `Install-ADDSForest` script the wizard generates is genuinely useful — it documents exactly what was configured and gives you a repeatable baseline for future deployments.
@@ -203,7 +206,7 @@ Screenshots from the lab environment documenting each stage of the deployment in
 
 ## Related Project
 
-This repository focuses on the deployment process. For the full running environment — DHCP scopes, populated OUs, GPO enforcement verified on a domain-joined workstation, file services with layered permissions — see the companion lab:
+This repository focuses on the `anik.local` deployment process. For a separate `lab.local` administration environment with DHCP scopes, populated OUs, GPO enforcement on a domain-joined workstation, and layered file permissions, see the companion lab:
 
 **[Windows-Server-2022-Enterprise-Domain](https://github.com/rahatislamanik-spec/Windows-Server-2022-Enterprise-Domain)**
 158 screenshots · 2 servers · 1 domain-joined workstation · multi-site DHCP · end-to-end GPO verification
