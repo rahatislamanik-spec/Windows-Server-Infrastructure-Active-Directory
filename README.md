@@ -1,5 +1,6 @@
 # Windows Server Infrastructure & Active Directory Administration
 > **Status:** Portfolio Complete — v1.0
+> **Last Updated:** June 2026
 
 ### Active Directory · DNS · Group Policy · Domain Controller Promotion · Windows Server 2022
 
