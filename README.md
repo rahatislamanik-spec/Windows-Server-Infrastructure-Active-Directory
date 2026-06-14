@@ -3,7 +3,7 @@
 
 ### Active Directory · DNS · Group Policy · Domain Controller Promotion · Windows Server 2022
 
-**Md Rahat Islam Anik · George Brown College · Cloud Computing & Network Administration (T465) · Postgraduate**
+**Md Rahat Islam Anik · Systems Administrator · Cloud & Infrastructure Operations · 2026**
 
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/rahatislamanik-spec/Windows-Server-Infrastructure-Active-Directory)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-rahatislamanik-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/rahatislamanik)
@@ -217,7 +217,7 @@ This repository focuses on the `anik.local` deployment process. For a separate `
 ## Author
 
 **Md Rahat Islam Anik**
-Cloud Computing & Network Administration · George Brown College · May 2026
+Cloud & Infrastructure Operations Specialist · Toronto, Canada
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=flat&logo=linkedin)](https://linkedin.com/in/rahatislamanik)
 [![GitHub](https://img.shields.io/badge/GitHub-Portfolio-181717?style=flat&logo=github)](https://github.com/rahatislamanik-spec)
